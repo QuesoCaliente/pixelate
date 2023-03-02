@@ -1,11 +1,10 @@
 import { StatusImageType, useImage } from "@/context/context";
-import { Box, Button, Stack } from "@chakra-ui/react";
+import { Box, Text, Stack } from "@chakra-ui/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { pixelate } from "@cloudinary/url-gen/actions/effect";
 import Image from "next/image";
 import React, { useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import EditUpload from "../editUpload/index";
 
 export default function Upload() {
   // Create a Cloudinary instance and set your cloud name.
@@ -27,11 +26,12 @@ export default function Upload() {
 
   const upload = (file: File) => {
     setStatusImage(StatusImageType.uploading);
-    const url = "https://api.cloudinary.com/v1_1/dmtvbc0i1/image/upload";
+    const url = process.env.NEXT_PUBLIC_CLOUDINARY_URL!;
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "pixelate");
     data.append("cloud_name", "dmtvbc0i1");
+    data.append("timestamp", `${Math.round(new Date().getTime() / 1000)}`);
     fetch(url, {
       method: "post",
       body: data,
@@ -42,7 +42,10 @@ export default function Upload() {
         const imageWithPixelate = cld
           .image(public_id)
           .effect(pixelate().squareSize(20));
-        setNewImage(imageWithPixelate);
+        setNewImage({
+          file: imageWithPixelate,
+          public_id: public_id,
+        });
         setStatusImage(StatusImageType.done);
       });
   };
@@ -57,7 +60,6 @@ export default function Upload() {
       <Stack
         {...getRootProps()}
         p={5}
-        w={"xl"}
         boxShadow={"md"}
         borderStyle={"dotted"}
         borderWidth={2}
@@ -93,13 +95,17 @@ export default function Upload() {
             cursor: "pointer",
             color: "white",
           }}
+          fontFamily="'VT323', monospace"
+          letterSpacing="widest"
         >
           Upload
         </Box>
         {isDragActive ? (
-          <p>Drop the files here ...</p>
+          <Text>Drop the files here ...</Text>
         ) : (
-          <p>Drag drop some files here, or click to select files</p>
+          <Text fontFamily="'VT323', monospace" fontSize="2xl">
+            Drag drop file here, or click to select files
+          </Text>
         )}
         {oldImage && (
           <Box width={300} height={300} position="relative">

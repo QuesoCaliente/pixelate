@@ -5,11 +5,16 @@ interface FileWithPreview extends File {
   preview?: string;
 }
 
+interface CloudinaryWithPublicId {
+  file: CloudinaryImage;
+  public_id: string;
+}
+
 type ImageContextType = {
   oldImage: FileWithPreview | null;
-  newImage: CloudinaryImage | null;
+  newImage: CloudinaryWithPublicId | null;
   setOldImage: (oldImage: FileWithPreview | null) => void;
-  setNewImage: (newImage: CloudinaryImage | null) => void;
+  setNewImage: (newImage: CloudinaryWithPublicId | null) => void;
   statusImage: StatusImageType;
   setStatusImage: (statusImage: StatusImageType) => void;
 };
@@ -39,17 +44,17 @@ export const ImageContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [oldImage, setoldImage] = useState<FileWithPreview | null>(null);
-  const [newImage, setnewImage] = useState<CloudinaryImage | null>(null);
+  const [newImage, setnewImage] = useState<CloudinaryWithPublicId | null>(null);
   const [statusImage, setstatusImage] = useState(StatusImageType.ready);
   const setOldImage = (oldImage: FileWithPreview | null) => {
     setoldImage(oldImage);
   };
-  const setNewImage = (newImage: CloudinaryImage | null) => {
-    setnewImage(newImage);
+  const setNewImage = (newImage: CloudinaryWithPublicId | null) => {
+    setnewImage(() => newImage);
   };
 
   const setStatusImage = (statusImage: StatusImageType) => {
-    setstatusImage(statusImage);
+    setstatusImage(() => statusImage);
   };
 
   return (

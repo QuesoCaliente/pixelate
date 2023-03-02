@@ -7,12 +7,11 @@ import {
   Stack,
   Collapse,
   Icon,
-  Link,
+  Link as ChakraLink,
   Popover,
   PopoverTrigger,
   PopoverContent,
   useColorModeValue,
-  useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
@@ -22,6 +21,7 @@ import {
   ChevronRightIcon,
 } from "@chakra-ui/icons";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function NavBar() {
   const { isOpen, onToggle } = useDisclosure();
@@ -49,12 +49,14 @@ export default function NavBar() {
             icon={
               isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
             }
-            variant={"ghost"}
+            variant={"solid"}
             aria-label={"Toggle Navigation"}
           />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Image alt="pixelate" width={210} height={33} src="/logo.png" />
+          <Link href="/">
+            <Image alt="pixelate" width={210} height={33} src="/logo.png" />
+          </Link>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />
@@ -69,10 +71,11 @@ export default function NavBar() {
         >
           <Button
             as={"a"}
-            fontSize={"sm"}
+            fontSize={"md"}
             fontWeight={400}
             variant={"link"}
             color={"white"}
+            fontFamily="'VT323', monospace"
             href={"#"}
           >
             Ingresar
@@ -80,8 +83,9 @@ export default function NavBar() {
           <Button
             as={"a"}
             display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
+            fontSize={"md"}
+            fontWeight={300}
+            fontFamily="'VT323', monospace"
             colorScheme={"pink"}
             href={"#"}
           >
@@ -108,11 +112,13 @@ const DesktopNav = () => {
         <Box key={navItem.label}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
             <PopoverTrigger>
-              <Link
+              <ChakraLink
                 p={2}
-                href={navItem.href ?? "#"}
-                fontSize={"sm"}
+                as={Link}
+                href={navItem.href ?? "/"}
+                fontSize={"xl"}
                 fontWeight={500}
+                fontFamily="'VT323', monospace"
                 color={linkColor}
                 _hover={{
                   textDecoration: "none",
@@ -120,7 +126,7 @@ const DesktopNav = () => {
                 }}
               >
                 {navItem.label}
-              </Link>
+              </ChakraLink>
             </PopoverTrigger>
 
             {navItem.children && (
@@ -148,7 +154,8 @@ const DesktopNav = () => {
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
-    <Link
+    <ChakraLink
+      as={Link}
       href={href}
       role={"group"}
       display={"block"}
@@ -179,7 +186,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
           <Icon color={"pink.400"} w={5} h={5} as={ChevronRightIcon} />
         </Flex>
       </Stack>
-    </Link>
+    </ChakraLink>
   );
 };
 
@@ -240,9 +247,9 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         >
           {children &&
             children.map((child) => (
-              <Link key={child.label} py={2} href={child.href}>
+              <ChakraLink as={Link} key={child.label} py={2} href={child.href}>
                 {child.label}
-              </Link>
+              </ChakraLink>
             ))}
         </Stack>
       </Collapse>
@@ -260,18 +267,18 @@ interface NavItem {
 const NAV_ITEMS: Array<NavItem> = [
   {
     label: "Editor",
-    href: "#",
+    href: "/editor",
   },
   {
-    label: "Quien soy",
-    href: "#",
+    label: "Nosotros",
+    href: "/",
   },
   {
     label: "Precios",
-    href: "#",
+    href: "/",
   },
   {
     label: "Contacto",
-    href: "#",
+    href: "/",
   },
 ];

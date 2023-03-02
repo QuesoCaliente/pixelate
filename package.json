@@ -16,6 +16,7 @@
     "@cloudinary/url-gen": "1.9.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@lottiefiles/lottie-player": "1.7.1",
     "@next/font": "13.1.6",
     "@types/node": "18.14.0",
     "@types/react": "18.0.28",
