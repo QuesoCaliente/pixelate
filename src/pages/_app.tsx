@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import NavBar from "@/components/navbar";
 import { ImageContextProvider } from "@/context/context";
 import theme from "@/utils/theme";
@@ -11,6 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ImageContextProvider>
         <NavBar />
         <Component {...pageProps} />
+        <Footer />
       </ImageContextProvider>
     </ChakraProvider>
   );

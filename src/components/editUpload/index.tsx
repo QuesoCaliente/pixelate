@@ -29,7 +29,7 @@ export default function EditUpload() {
 
   const cld = new Cloudinary({
     cloud: {
-      cloudName: "dmtvbc0i1",
+      cloudName: process.env.NEXT_PUBLIC_CLOUDINARYNAME,
     },
   });
 
@@ -41,7 +41,9 @@ export default function EditUpload() {
     gif: "gif",
   };
 
-  const updating = () => {
+  const updating = async () => {
+    const promisedSetState = (newState: StatusImageType) =>
+      new Promise((resolve) => setStatusImage(newState));
     let image = cld
       .image(newImage?.public_id)
       .effect(pixelate().squareSize(form.squareRatio));
@@ -87,6 +89,7 @@ export default function EditUpload() {
           as={"a"}
           colorScheme="pink"
           download
+          isLoading={newImage === null}
           href={newImage?.file.toURL()!}
         >
           Descargar

@@ -98,13 +98,18 @@ export default function Upload() {
           fontFamily="'VT323', monospace"
           letterSpacing="widest"
         >
-          Upload
+          Subir
         </Box>
         {isDragActive ? (
           <Text>Drop the files here ...</Text>
         ) : (
-          <Text fontFamily="'VT323', monospace" fontSize="2xl">
-            Drag drop file here, or click to select files
+          <Text
+            textAlign="center"
+            fontFamily="'VT323', monospace"
+            fontSize="2xl"
+          >
+            Arrastre y suelte el archivo aquí o haga clic para seleccionar
+            archivo
           </Text>
         )}
         {oldImage && (
