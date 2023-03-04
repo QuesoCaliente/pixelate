@@ -29,7 +29,7 @@ export default function EditUpload() {
 
   const cld = new Cloudinary({
     cloud: {
-      cloudName: process.env.NEXT_PUBLIC_CLOUDINARYNAME,
+      cloudName: "dmtvbc0i1",
     },
   });
 
