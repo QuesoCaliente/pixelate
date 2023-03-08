@@ -20,11 +20,19 @@ import React, { useEffect, ReactNode, useState, useRef } from "react";
 import { LoadingEditor } from "../loading";
 import { setInterval } from "timers";
 import Upload from "../upload";
+import { useRouter } from "next/router";
 
 export default function EditUpload() {
-  const { oldImage, newImage, setNewImage, setStatusImage, statusImage } =
-    useImage();
+  const {
+    oldImage,
+    newImage,
+    setNewImage,
+    setStatusImage,
+    statusImage,
+    setOldImage,
+  } = useImage();
   const imgRef = useRef<HTMLImageElement>(null);
+  const navigation = useRouter();
   const [form, setform] = useState({
     width: 0,
     height: 0,
@@ -250,7 +258,12 @@ export default function EditUpload() {
             Actualizar
           </Button>
           <Button
-            onClick={() => setStatusImage(StatusImageType.ready)}
+            onClick={() => {
+              setStatusImage(StatusImageType.ready);
+              setNewImage(null);
+              setOldImage(null);
+              navigation.push("/");
+            }}
             flex={1}
             colorScheme={"red"}
           >

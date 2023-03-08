@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import styles from "./upload.module.css";
 
 export default function Upload() {
   // Create a Cloudinary instance and set your cloud name.
@@ -62,10 +63,27 @@ export default function Upload() {
     <>
       <Stack
         {...getRootProps()}
+        className={styles.upload}
+        overflow="hidden"
+        _before={{
+          content: '""',
+          position: "absolute",
+          width: "100px",
+          height: "500%",
+          background: "linear-gradient(180deg,#00b7ff,#ff30ff)",
+        }}
+        _after={{
+          content: '""',
+          position: "absolute",
+          inset: 1,
+          background: "gray.100",
+          borderRadius: "xl",
+        }}
+        position="relative"
+        borderRadius={"xl"}
         p={5}
         boxShadow={"md"}
-        borderStyle={"dotted"}
-        borderWidth={2}
+        backgroundColor={"gray.100"}
         borderColor={"pink.400"}
         justifyContent="center"
         alignItems="center"
@@ -82,21 +100,23 @@ export default function Upload() {
           width={220}
           textAlign="center"
           // bg={"pink.300"}
-          color={"gray.700"}
-          px={4}
-          py={2}
-          borderStyle={"dashed"}
+          color={"gray.900"}
+          borderStyle={"solid"}
+          borderRadius={"xl"}
           borderWidth={2}
           borderColor={"pink.400"}
+          boxShadow={"md"}
+          px={4}
+          py={2}
           display={"inline-block"}
-          rounded={"md"}
+          rounded={"full"}
           fontSize={"2xl"}
           fontWeight={"bold"}
           transition={"all 0.2s"}
           _hover={{
-            bg: "pink.400",
             cursor: "pointer",
-            color: "white",
+            color: "gray.600",
+            transform: "translateY(-2px)",
           }}
           fontFamily="'VT323', monospace"
           letterSpacing="widest"
@@ -104,7 +124,7 @@ export default function Upload() {
           Subir
         </Box>
         {isDragActive ? (
-          <Text>Drop the files here ...</Text>
+          <Text zIndex={1}>Drop the files here ...</Text>
         ) : (
           <Text
             textAlign="center"
