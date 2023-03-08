@@ -16,12 +16,14 @@ import { format } from "@cloudinary/url-gen/actions/delivery";
 import { pixelate } from "@cloudinary/url-gen/actions/effect";
 import { scale } from "@cloudinary/url-gen/actions/resize";
 import { auto } from "@cloudinary/url-gen/qualifiers/quality";
-import React, { useEffect, ReactNode, useState } from "react";
+import React, { useEffect, ReactNode, useState, useRef } from "react";
 import { LoadingEditor } from "../loading";
+import { setInterval } from "timers";
 
 export default function EditUpload() {
   const { oldImage, newImage, setNewImage, setStatusImage, statusImage } =
     useImage();
+  const imgRef = useRef<HTMLImageElement>(null);
   const [form, setform] = useState({
     width: 0,
     height: 0,
@@ -44,12 +46,43 @@ export default function EditUpload() {
   };
 
   useEffect(() => {
-    if (newImage) {
-      setStatusImage(StatusImageType.done);
+    if (newImage?.file.toURL() === undefined) return;
+    let intervalId: NodeJS.Timeout;
+    let tries = 0;
+
+    const loadImage = () => {
+      const img = new Image();
+      img.src = newImage?.file.toURL();
+      img.onload = () => {
+        setTimeout(() => {
+          setStatusImage(StatusImageType.done);
+        }, 1500);
+        clearInterval(intervalId);
+      };
+      img.onerror = () => {
+        setStatusImage(StatusImageType.error);
+      };
+    };
+
+    if (statusImage === StatusImageType.uploading) {
+      loadImage();
+      intervalId = setInterval(() => {
+        tries++;
+        if (tries < 20) {
+          loadImage();
+        } else {
+          clearInterval(intervalId);
+        }
+      }, 1000);
     }
-  }, [newImage]);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [newImage, statusImage]);
 
   const updating = async () => {
+    setNewImage(null);
     setStatusImage(StatusImageType.uploading);
     let image = cld
       .image(newImage?.public_id)
@@ -93,7 +126,11 @@ export default function EditUpload() {
           {statusImage === StatusImageType.uploading ? (
             <LoadingEditor />
           ) : (
-            <ChakraImage alt="Imagen nueva" src={newImage?.file.toURL()} />
+            <ChakraImage
+              ref={imgRef}
+              alt="Imagen nueva"
+              src={newImage?.file.toURL() + "?" + Date.now()}
+            />
           )}
         </two-up>
         <Button
