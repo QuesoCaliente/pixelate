@@ -72,7 +72,7 @@ export default function NavBar() {
         >
           <Button
             as={"a"}
-            fontSize={"2xl"}
+            fontSize={["lg", "xl", "2xl"]}
             leftIcon={<Icon as={FaGithub} />}
             borderRadius={"full"}
             variant={"solid"}
