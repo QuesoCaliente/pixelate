@@ -11,6 +11,6 @@
   animation: neon 4s linear infinite;
 }
 
-.upload > div {
+.upload > * {
     z-index: 1;
 }
