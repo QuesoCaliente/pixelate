@@ -7,7 +7,7 @@ import {
   Input,
   InputLeftAddon,
   InputGroup,
-  Image,
+  Image as ChakraImage,
   Select,
 } from "@chakra-ui/react";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
@@ -17,9 +17,11 @@ import { pixelate } from "@cloudinary/url-gen/actions/effect";
 import { scale } from "@cloudinary/url-gen/actions/resize";
 import { auto } from "@cloudinary/url-gen/qualifiers/quality";
 import React, { useEffect, ReactNode, useState } from "react";
+import { LoadingEditor } from "../loading";
 
 export default function EditUpload() {
-  const { oldImage, newImage, setNewImage, setStatusImage } = useImage();
+  const { oldImage, newImage, setNewImage, setStatusImage, statusImage } =
+    useImage();
   const [form, setform] = useState({
     width: 0,
     height: 0,
@@ -41,9 +43,14 @@ export default function EditUpload() {
     gif: "gif",
   };
 
+  useEffect(() => {
+    if (newImage) {
+      setStatusImage(StatusImageType.done);
+    }
+  }, [newImage]);
+
   const updating = async () => {
-    const promisedSetState = (newState: StatusImageType) =>
-      new Promise((resolve) => setStatusImage(newState));
+    setStatusImage(StatusImageType.uploading);
     let image = cld
       .image(newImage?.public_id)
       .effect(pixelate().squareSize(form.squareRatio));
@@ -82,14 +89,19 @@ export default function EditUpload() {
     >
       <Stack w="full" flex={3}>
         <two-up>
-          <Image alt="Imagen antigua" src={oldImage?.preview} />
-          <Image alt="Imagen nueva" src={newImage?.file.toURL()} />
+          <ChakraImage alt="Imagen antigua" src={oldImage?.preview} />
+          {statusImage === StatusImageType.uploading ? (
+            <LoadingEditor />
+          ) : (
+            <ChakraImage alt="Imagen nueva" src={newImage?.file.toURL()} />
+          )}
         </two-up>
         <Button
           as={"a"}
           colorScheme="pink"
           download
-          isLoading={newImage === null}
+          loadingText="Cargando..."
+          isLoading={statusImage === StatusImageType.uploading}
           href={newImage?.file.toURL()!}
         >
           Descargar
@@ -184,7 +196,13 @@ export default function EditUpload() {
           </Box>
         </Box>
         <Box display="flex" gap={5} justifyContent="center">
-          <Button onClick={() => updating()} flex={1} colorScheme={"blue"}>
+          <Button
+            loadingText="Cargando..."
+            isLoading={statusImage === StatusImageType.uploading}
+            onClick={() => updating()}
+            flex={1}
+            colorScheme={"blue"}
+          >
             Actualizar
           </Button>
           <Button

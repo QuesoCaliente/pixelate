@@ -3,6 +3,7 @@ import { Box, Text, Stack } from "@chakra-ui/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { pixelate } from "@cloudinary/url-gen/actions/effect";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -15,6 +16,7 @@ export default function Upload() {
   });
 
   const { setOldImage, oldImage, setStatusImage, setNewImage } = useImage();
+  const navigation = useRouter();
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setOldImage(
       Object.assign(acceptedFiles[0], {
@@ -22,6 +24,7 @@ export default function Upload() {
       })
     );
     upload(acceptedFiles[0]);
+    navigation.push("/editor");
   }, []);
 
   const upload = (file: File) => {
