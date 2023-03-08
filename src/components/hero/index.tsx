@@ -51,7 +51,7 @@ export default function Hero() {
           </Heading>
         </Stack>
       )}
-      <Stack m={"0 auto"}>
+      <Stack m={"0 auto"} justifyContent="center" alignItems="center">
         {statusImage === StatusImageType.uploading && <Loading />}
         <Upload />
         {statusImage === StatusImageType.error && (

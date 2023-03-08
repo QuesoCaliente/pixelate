@@ -22,6 +22,7 @@ import {
 } from "@chakra-ui/icons";
 import Image from "next/image";
 import Link from "next/link";
+import { FaGithub } from "react-icons/fa";
 
 export default function NavBar() {
   const { isOpen, onToggle } = useDisclosure();
@@ -71,25 +72,25 @@ export default function NavBar() {
         >
           <Button
             as={"a"}
-            fontSize={"md"}
-            fontWeight={400}
-            variant={"link"}
-            color={"white"}
+            fontSize={"2xl"}
+            leftIcon={<Icon as={FaGithub} />}
+            borderRadius={"full"}
+            variant={"solid"}
+            backgroundColor="transparent"
+            border={"2px"}
+            borderColor={"gray.100"}
+            color={"gray.300"}
+            _hover={{
+              bg: "gray.100",
+              color: "gray.900",
+            }}
+            fontWeight={700}
+            letterSpacing={"widest"}
             fontFamily="'VT323', monospace"
-            href={"#"}
+            href="https://github.com/QuesoCaliente/pixelate"
+            target="_blank"
           >
-            Ingresar
-          </Button>
-          <Button
-            as={"a"}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"md"}
-            fontWeight={300}
-            fontFamily="'VT323', monospace"
-            colorScheme={"pink"}
-            href={"#"}
-          >
-            Registro
+            Github
           </Button>
         </Stack>
       </Flex>
