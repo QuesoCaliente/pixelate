@@ -4,7 +4,7 @@ import React, { FC, useEffect, useRef } from "react";
 
 export default function Editor() {
   return (
-    <Box p={10}>
+    <Box minH={"90vh"} p={10}>
       <EditUpload />
     </Box>
   );

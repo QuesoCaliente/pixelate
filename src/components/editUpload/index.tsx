@@ -140,6 +140,7 @@ export default function EditUpload() {
         )}
         <Button
           as={"a"}
+          isDisabled={newImage === null}
           colorScheme="pink"
           download
           loadingText="Cargando..."
@@ -242,6 +243,7 @@ export default function EditUpload() {
             loadingText="Cargando..."
             isLoading={statusImage === StatusImageType.uploading}
             onClick={() => updating()}
+            isDisabled={oldImage === null}
             flex={1}
             colorScheme={"blue"}
           >
