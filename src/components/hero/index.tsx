@@ -53,7 +53,7 @@ export default function Hero() {
       )}
       <Stack m={"0 auto"}>
         {statusImage === StatusImageType.uploading && <Loading />}
-        {statusImage === StatusImageType.ready && <Upload />}
+        <Upload />
         {statusImage === StatusImageType.error && (
           <Text color="red.500">Error al subir la imagen</Text>
         )}

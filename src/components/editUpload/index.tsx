@@ -19,6 +19,7 @@ import { auto } from "@cloudinary/url-gen/qualifiers/quality";
 import React, { useEffect, ReactNode, useState, useRef } from "react";
 import { LoadingEditor } from "../loading";
 import { setInterval } from "timers";
+import Upload from "../upload";
 
 export default function EditUpload() {
   const { oldImage, newImage, setNewImage, setStatusImage, statusImage } =
@@ -121,18 +122,22 @@ export default function EditUpload() {
       gap={10}
     >
       <Stack w="full" flex={3}>
-        <two-up>
-          <ChakraImage alt="Imagen antigua" src={oldImage?.preview} />
-          {statusImage === StatusImageType.uploading ? (
-            <LoadingEditor />
-          ) : (
-            <ChakraImage
-              ref={imgRef}
-              alt="Imagen nueva"
-              src={newImage?.file.toURL() + "?" + Date.now()}
-            />
-          )}
-        </two-up>
+        {oldImage === null ? (
+          <Upload />
+        ) : (
+          <two-up>
+            <ChakraImage alt="Imagen antigua" src={oldImage?.preview} />
+            {statusImage === StatusImageType.uploading ? (
+              <LoadingEditor />
+            ) : (
+              <ChakraImage
+                ref={imgRef}
+                alt="Imagen nueva"
+                src={newImage?.file.toURL() + "?" + Date.now()}
+              />
+            )}
+          </two-up>
+        )}
         <Button
           as={"a"}
           colorScheme="pink"
